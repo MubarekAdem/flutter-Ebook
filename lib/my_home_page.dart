@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:ffi';
-import 'dart:nativewrappers/_internal/vm/lib/ffi_patch.dart';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'audio/app_colors.dart' as AppColors;
 
 class MyHomePage extends StatefulWidget {
@@ -12,6 +14,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List popularBooks = [];
+  ReadData() async {
+    await DefaultAssetBundle.of(context)
+        .loadString("lib/assets/json/popularBooks.json")
+        .then((s) {
+      setState(() {
+        popularBooks = json.decode(s);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ReadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,20 +67,36 @@ class _MyHomePageState extends State<MyHomePage> {
                         Text("Popular Books ", style: TextStyle(fontSize: 30)))
               ],
             ),
+            SizedBox(height: 20),
             Container(
                 height: 180,
-                child: PageView.builder(
-                    controller: PageController(viewportFraction: 0.8),
-                    itemCount: 5,
-                    itemBuilder: (_, i) {
-                      return Container(
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      left: -20,
+                      right: 0,
+                      child: Container(
                           height: 180,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                image: AssetImage("lib/assets/img/pic-8.png"),
-                              )));
-                    }))
+                          child: PageView.builder(
+                              controller: PageController(viewportFraction: 0.8),
+                              itemCount: popularBooks.length,
+                              itemBuilder: (_, i) {
+                                return Container(
+                                    height: 180,
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: const EdgeInsets.only(right: 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              popularBooks[i]["img"]),
+                                          fit: BoxFit.fill,
+                                        )));
+                              })),
+                    )
+                  ],
+                ))
           ],
         )),
       ),

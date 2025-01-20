@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_new/app_tabs.dart';
 import 'audio/app_colors.dart' as AppColors;
 
 class MyHomePage extends StatefulWidget {
@@ -96,16 +97,16 @@ class _MyHomePageState extends State<MyHomePage>
                     return [
                       SliverAppBar(
                         pinned: true,
-                        backgroundColor: Colors.white,
+                        backgroundColor: AppColors.silverBackground,
                         floating: true,
                         bottom: PreferredSize(
                           preferredSize: const Size.fromHeight(50),
                           child: Container(
-                            margin: const EdgeInsets.all(0),
+                            margin: const EdgeInsets.only(bottom: 20, left: 10),
                             child: TabBar(
                               indicatorPadding: const EdgeInsets.all(0),
                               indicatorSize: TabBarIndicatorSize.label,
-                              labelPadding: const EdgeInsets.all(0),
+                              labelPadding: const EdgeInsets.only(right: 10),
                               controller: _tabController,
                               isScrollable: true,
                               indicator: BoxDecoration(
@@ -113,60 +114,14 @@ class _MyHomePageState extends State<MyHomePage>
                                 color: AppColors.background,
                               ),
                               tabs: [
-                                Container(
-                                  width: 120,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: AppColors.menu1Color,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          blurRadius: 7,
-                                          offset: Offset(0, 0),
-                                        )
-                                      ]),
-                                  child: Text(
-                                    "NEW",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                Container(
-                                  width: 120,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: AppColors.menu2Color,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          blurRadius: 7,
-                                          offset: Offset(0, 0),
-                                        )
-                                      ]),
-                                  child: Text(
-                                    "NEW",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                Container(
-                                  width: 120,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: AppColors.menu3Color,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          blurRadius: 7,
-                                          offset: Offset(0, 0),
-                                        )
-                                      ]),
-                                  child: Text(
-                                    "NEW",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                )
+                                AppTabs(
+                                    color: AppColors.menu1Color, text: "NEW"),
+                                AppTabs(
+                                    color: AppColors.menu2Color,
+                                    text: "POPULAR"),
+                                AppTabs(
+                                    color: AppColors.menu3Color,
+                                    text: "TRENDING"),
                               ],
                             ),
                           ),

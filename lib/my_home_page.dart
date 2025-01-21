@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_new/app_tabs.dart';
 import 'audio/app_colors.dart' as AppColors;
 
@@ -14,13 +15,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   List popularBooks = [];
+  List books = [];
   late TabController _tabController;
+  late ScrollController _scrollController;
 
-  Future<void> readData() async {
+  ReadData() async {
     String data = await DefaultAssetBundle.of(context)
         .loadString("lib/assets/json/popularBooks.json");
     setState(() {
       popularBooks = json.decode(data);
+    });
+    String booksData = await DefaultAssetBundle.of(context)
+        .loadString("lib/assets/json/books.json");
+    setState(() {
+      books = json.decode(booksData);
     });
   }
 
@@ -28,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    readData();
+    ReadData();
   }
 
   @override
@@ -131,13 +139,42 @@ class _MyHomePageState extends State<MyHomePage>
                   },
                   body: TabBarView(
                     controller: _tabController,
-                    children: const [
-                      Material(
-                          child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                              ),
-                              title: Text("Content"))),
+                    children: [
+                      ListView.builder(
+                          itemCount: books == null ? 0 : books.length,
+                          itemBuilder: (_, i) {
+                            return Container(
+                              margin: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 10, bottom: 10),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: AppColors.tabBarViewColor,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.2),
+                                          blurRadius: 2,
+                                          offset: Offset(0, 0),
+                                        )
+                                      ]),
+                                  child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                              width: 90,
+                                              height: 120,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                    image: AssetImage(
+                                                        books[i]["img"]),
+                                                  )))
+                                        ],
+                                      ))),
+                            );
+                          }),
                       Material(
                           child: ListTile(
                               leading: CircleAvatar(

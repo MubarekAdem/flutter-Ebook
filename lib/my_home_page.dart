@@ -20,12 +20,12 @@ class _MyHomePageState extends State<MyHomePage>
   late ScrollController _scrollController;
 
   ReadData() async {
-    String data = await DefaultAssetBundle.of(context)
+    var data = await DefaultAssetBundle.of(context)
         .loadString("lib/assets/json/popularBooks.json");
     setState(() {
       popularBooks = json.decode(data);
     });
-    String booksData = await DefaultAssetBundle.of(context)
+    var booksData = await DefaultAssetBundle.of(context)
         .loadString("lib/assets/json/books.json");
     setState(() {
       books = json.decode(booksData);
@@ -170,7 +170,65 @@ class _MyHomePageState extends State<MyHomePage>
                                                   image: DecorationImage(
                                                     image: AssetImage(
                                                         books[i]["img"]),
-                                                  )))
+                                                  ))),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.star,
+                                                      size: 24,
+                                                      color:
+                                                          AppColors.starColor),
+                                                  SizedBox(width: 5),
+                                                  Text(
+                                                      books[i]["rating"]
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .menu2Color)),
+                                                ],
+                                              ),
+                                              Text(
+                                                books[i]["title"],
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontFamily: "Avenir",
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                books[i]["text"],
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontFamily: "Avenir",
+                                                  color: AppColors.subTitleText,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 60,
+                                                height: 15,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(3),
+                                                  color: AppColors.loveColor,
+                                                ),
+                                                child: Text(
+                                                  "Love",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontFamily: "Avenir",
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                alignment: Alignment.center,
+                                              )
+                                            ],
+                                          )
                                         ],
                                       ))),
                             );
